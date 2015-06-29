@@ -1,0 +1,141 @@
+<!doctype html>
+<meta charset="UTF-8">
+<html>
+<head>
+<title>Aplicaci&oacute;n Hernan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" href="estilos.css"/>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+</head>
+
+<body>
+<div data-role="page" id="inicio">
+  <div id="contenido">
+    <div id="logo"> <img src="almacen_index_logo.png"/ id="logoImagen"> </div>
+    <h1>Aplicación disponible para nuestros clientes nuevos </h1>
+    
+    <form id="formulario">
+    <div class="campo">
+      <input type="text"  placeholder="ingrese su usuario" id="nombredeusuario" name="nombredeusuario"  />
+    </div>
+    <div class="campo">
+      <input type="password"  placeholder="ingrese su contraseña" id="clave" name="clave"/>
+    </div>
+    <div id="boton"><input type="submit" value="Iniciar sesión" id="botonLogin" data-ajax="false"></div>
+ 
+  </form>
+  </div>
+</div>
+
+
+
+<div data-role="page" id="trabajos">
+	 
+		
+	 
+		
+			<h1> Lista de tus trabajos  </h1>
+			
+
+			<ul id="listadotrabajos" ></ul>
+
+		
+	 
+	</div>
+
+
+
+
+
+
+<div data-role="page" id="trabajosview">
+  <div id="contenido">
+    <div id="trabajo"> <img src="dg.jpg"/ id="trabajoImagen"></div>
+    <div id="trabajo"> <img src="dg.jpg"/ id="trabajoImagen"></div>
+    <div id="trabajo"> <img src="dg.jpg"/ id="trabajoImagen"></div>
+  </div>
+   <div id="boton"><a href="#formulariotrabajos"  id="botoncito" data-transition="fade" data-rel="popup">Enviar un comentario</a>
+</div>
+   
+   <div data-role="popup" id="formulariotrabajos">
+<form>
+
+<input type="text" placeholder="Nombre">
+<input type="email" placeholder="Correo">
+<textarea id="area_texto" placeholder="Consulta"></textarea>
+<input type="submit" id="botoncito" value="Enviar">
+
+
+
+
+</form>
+   </div>
+ 
+</div>
+
+
+<script>
+
+  
+	$('#formulario').submit(function() {
+	// recolecta los valores que inserto el usuario
+	var datosUsuario = $("#nombredeusuario").val()
+	var datosPassword = $("#clave").val()
+
+
+	archivoValidacion = "http://almacenmultimedia.com.ar/loginapp/validacionReal.php?jsoncallback=?" 
+	 
+	$.getJSON( archivoValidacion, { usuario:datosUsuario ,password:datosPassword}) 
+	.done(function(respuestaServer) {
+
+
+		if(respuestaServer.validacion == "ok"){ 
+
+			$.mobile.changePage("#trabajos");
+
+			$("#trabajos").on("pageshow", function(){ //al mostrarse esa pagina pasa algo.
+				
+			
+				
+				
+				
+				
+				var elementos = Object.keys(respuestaServer).length;
+
+				for(var i=0; i<elementos-1;i++){
+
+				 $("#trabajos").append("<li>" + respuestaServer[i].tituloTrabajo+ "</li>");
+				
+				}
+			});
+
+
+	}else{
+
+	    alert("no");
+	}
+	
+
+	})
+
+
+	return false;
+
+
+	})
+
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript" src="cordova.js"></script> 
+
+</body>
+</html>
